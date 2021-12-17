@@ -4,6 +4,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
 
+
 namespace SeleniumWDTestProject
 {
     public class Tests
@@ -19,17 +20,17 @@ namespace SeleniumWDTestProject
             }
             catch (NoSuchElementException)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         [SetUp]
         public void Setup()
         {
             driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl("http://localhost:5000/");
+            driver.Manage().Window.Maximize();
 
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             wait.Timeout = TimeSpan.FromSeconds(5);
@@ -53,7 +54,7 @@ namespace SeleniumWDTestProject
             driver.FindElement(By.XPath("//input[@id=\"ProductName\"]")).SendKeys("Borovichok Mushroom");
             new SelectElement(driver.FindElement(By.XPath("//select[@id=\"CategoryId\"]"))).SelectByText("Produce");
             new SelectElement(driver.FindElement(By.XPath("//select[@id=\"SupplierId\"]"))).SelectByText("Grandma Kelly's Homestead");
-            driver.FindElement(By.XPath("//input[@id=\"UnitPrice\"]")).SendKeys("5.0000");
+            driver.FindElement(By.XPath("//input[@id=\"UnitPrice\"]")).SendKeys("4");
             driver.FindElement(By.XPath("//input[@id=\"QuantityPerUnit\"]")).SendKeys("10 boxes x 20 bags");
             driver.FindElement(By.XPath("//input[@id=\"UnitsInStock\"]")).SendKeys("2");
             driver.FindElement(By.XPath("//input[@id=\"UnitsOnOrder\"]")).SendKeys("2");
@@ -87,13 +88,12 @@ namespace SeleniumWDTestProject
             driver.FindElement(By.XPath("(//a[contains(text(), 'Rem')])[last()]")).Click();
 
             driver.SwitchTo().Alert().Accept();
-            Assert.IsTrue(isElementPresent(By.XPath("//a[contains (text(), 'Bor')]")));
         }
 
         [TearDown]
         public void TearDown()
         {
-           driver.FindElement(By.XPath("//a[@href=\"/Account/Logout\"]")).Click();
+            driver.FindElement(By.LinkText("Logout")).Click();
             Assert.AreEqual(driver.FindElement(By.XPath("//h2")).Text, "Login");
             driver.Quit();
         }
