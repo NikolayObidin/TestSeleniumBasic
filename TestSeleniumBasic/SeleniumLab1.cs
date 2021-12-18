@@ -93,7 +93,7 @@ namespace SeleniumWDTestProject
         [TearDown]
         public void TearDown()
         {
-            driver.FindElement(By.LinkText("Logout")).Click();
+            driver.FindElement(By.XPath("//a[@href=\"/Account/Logout\"]")).Click();
             Assert.AreEqual(driver.FindElement(By.XPath("//h2")).Text, "Login");
             driver.Quit();
         }
